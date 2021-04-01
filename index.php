@@ -1,5 +1,6 @@
 <?php 
     if (isset($_POST["add"])) {
+        echo 'Adding';
         $data = json_decode(file_get_contents("data/data.json"), true);
 
         $cur_id = 1;
@@ -13,6 +14,27 @@
             "inch" => $_POST["inch"],
             "ram" => $_POST["ram"]
         ]);
+
+        file_put_contents("data/data.json", json_encode($data, JSON_UNESCAPED_UNICODE));
+
+        header("Location: ".$_SERVER['REQUEST_URI']);
+    }
+
+    if (isset($_POST["change"])) {
+        echo $_POST["change"];
+
+        $data = json_decode(file_get_contents("data/data.json"), true);
+
+        $cur_id = $_POST["change"];
+
+        foreach ($data as $key => $value) {
+            if ($value["id"] == $cur_id) {
+                $data[$key]["model"] = $_POST["model"];
+                $data[$key]["inch"] = $_POST["inch"];
+                $data[$key]["ram"] = $_POST["ram"];
+                break;
+            }
+        }
 
         file_put_contents("data/data.json", json_encode($data, JSON_UNESCAPED_UNICODE));
 

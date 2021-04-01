@@ -17,16 +17,30 @@
                 <h2 class="content__header">
                     Введите данные о новом смартфоне
                 </h2>
+                <?php 
+                    if (isset($_POST["change"])) {
+                        $data = json_decode(file_get_contents("data/data.json"), true);
+                        $cur_id = $_POST["change"];
+                        $cur_key = 0;
+                
+                        foreach ($data as $key => $value) {
+                            if ($value["id"] == $cur_id) {
+                                $cur_key = $key;
+                                break;
+                            }
+                        }
+                    }
+                ?>
                 <form class="form" method="post" action="index.php">
-                    <input class="form__input" type="text" name="model" placeholder="Модель смартфона" required>
-                    <input class="form__input" type="text" name="inch" placeholder="Диагональ экрана" required>
-                    <input class="form__input" type="text" name="ram" placeholder="Оперативная память (Гб)" required>
-                    <button class="button form__submit" type="submit" name="add">Добавить</button>
+                    <input class="form__input" type="text" name="model" placeholder="Модель смартфона" value="<?php echo (isset($_POST["change"]) ? $data[$cur_key]["model"] : "") ?>" required>
+                    <input class="form__input" type="text" name="inch" placeholder="Диагональ экрана" value="<?php echo (isset($_POST["change"]) ? $data[$cur_key]["inch"] : "") ?>" required>
+                    <input class="form__input" type="text" name="ram" placeholder="Оперативная память (Гб)" value="<?php echo (isset($_POST["change"]) ? $data[$cur_key]["ram"] : "") ?>" required>
+                    <button class="button form__submit" type="submit" name="<?php echo (isset($_POST["change"]) ? "change" : "add") ?>"<?php echo (isset($_POST["change"]) ? ' value="' . $data[$cur_key]["id"] . '"' : "") ?>><?php echo (isset($_POST["change"]) ? "Сохранить" : "Добавить") ?></button>
                 </form>
             </div>
             <div class="content__right">
                 <h2 class="content__header">
-                    Содержимое файла data.txt
+                    Содержимое файла
                 </h2>
                 <?php include 'php/smartphones.php' ?>
             </div>
