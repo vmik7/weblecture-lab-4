@@ -1,6 +1,7 @@
 <?php 
-    $file_data = file("data/data.txt");
-    foreach ($file_data as $item) {
-        echo "<div class=\"content__result\">$item</div>";
+    $data = file_get_contents("data/data.json");
+    $data = json_decode($data, true);
+    foreach ($data as $item) {
+        echo "<div class=\"content__result\">" . $item["model"] . ", " . $item["inch"] . "', " . $item["ram"] . "Гб" . "</div>";
     }
 ?>

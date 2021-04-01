@@ -1,3 +1,20 @@
+<?php 
+    if (isset($_POST["add"])) {
+        $data = file_get_contents("data/data.json");
+        $data = json_decode($data, true);
+
+        array_push($data, [
+            "model" => $_POST["model"],
+            "inch" => $_POST["inch"],
+            "ram" => $_POST["ram"],
+        ]);
+
+        file_put_contents("data/data.json", json_encode($data, JSON_UNESCAPED_UNICODE));
+
+        header("Location: ".$_SERVER['REQUEST_URI']);
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -24,7 +41,7 @@
             </div>
             <div class="content__right">
                 <h2 class="content__header">
-                    Содержимое файла data.txt
+                    Содержимое файла
                 </h2>
                 <?php require 'php/smartphones.php' ?>
             </div>

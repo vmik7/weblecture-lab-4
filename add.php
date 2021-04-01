@@ -17,18 +17,18 @@
                 <h2 class="content__header">
                     Введите данные о новом смартфоне
                 </h2>
-                <form class="form" method="post" action="add_result.php">
+                <form class="form" method="post" action="index.php">
                     <input class="form__input" type="text" name="model" placeholder="Модель смартфона" required>
                     <input class="form__input" type="text" name="inch" placeholder="Диагональ экрана" required>
-                    <input class="form__input" type="text" name="volume" placeholder="Объем памяти (Гб)" required>
-                    <button class="button form__submit" type="submit">Добавить</button>
+                    <input class="form__input" type="text" name="ram" placeholder="Оперативная память (Гб)" required>
+                    <button class="button form__submit" type="submit" name="add">Добавить</button>
                 </form>
             </div>
             <div class="content__right">
                 <h2 class="content__header">
                     Содержимое файла data.txt
                 </h2>
-                <?php require 'php/smartphones.php' ?>
+                <?php include 'php/smartphones.php' ?>
             </div>
         </div>
     </main>
