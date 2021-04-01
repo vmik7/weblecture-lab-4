@@ -1,12 +1,17 @@
 <?php 
     if (isset($_POST["add"])) {
-        $data = file_get_contents("data/data.json");
-        $data = json_decode($data, true);
+        $data = json_decode(file_get_contents("data/data.json"), true);
+
+        $cur_id = 1;
+        if (!empty($data)) {
+            $cur_id = $data[array_key_last($data)]["id"] + 1;
+        }
 
         array_push($data, [
+            "id" => $cur_id,
             "model" => $_POST["model"],
             "inch" => $_POST["inch"],
-            "ram" => $_POST["ram"],
+            "ram" => $_POST["ram"]
         ]);
 
         file_put_contents("data/data.json", json_encode($data, JSON_UNESCAPED_UNICODE));

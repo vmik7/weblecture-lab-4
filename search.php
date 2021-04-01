@@ -17,25 +17,49 @@
                 <h2 class="content__header">
                     Введите данные о новом смартфоне
                 </h2>
-                <form class="form" method="post" action="index.php">
+                <form class="form" method="post" action="search.php">
                     <input class="form__input" type="search" name="model" placeholder="Модель смартфона">
-                    <button class="button form__submit" type="submit">Найти</button>
+                    <button class="button form__submit" type="submit" name="search">Найти</button>
                 </form>
 
-                <div class="smartphone">
-                    <div class="smartphone__data">HUAWEI P40 Lite, 6.4 дюйма, 6/128 Гб</div>
-                    <a class="button" href="#">Редактировать</a>
-                    <a class="button" href="#">Удалить</a>
-                </div>
-                <div class="smartphone">
-                    <div class="smartphone__data">HUAWEI P40 Lite, 6.4 дюйма, 6/128 Гб</div>
-                    <a class="button" href="#">Редактировать</a>
-                    <a class="button" href="#">Удалить</a>
-                </div>
+                <?php 
+                    
+                    if (isset($_POST["search"])) {
+                        
+                        $data = json_decode(file_get_contents("data/data.json"), true);
+                        $search_value = $_POST["model"];
+
+                        foreach ($data as $item) {
+                            if (strpos($item["model"], $search_value) !== false) {
+                                echo '
+                                    <form class="smartphone" method="POST">
+                                        <div class="smartphone__data">' . $item["model"] . ", " . $item["inch"] . "', " . $item["ram"] . '</div>
+                                        <a class="button" href="#">Редактировать</a>
+                                        <button type="submit" name="delete" value="' . $item["id"] . '" class="button">Удалить</button>
+                                    </form>
+                                ';
+                            }
+                        }
+                    }
+
+                    if (isset($_POST["delete"])) {
+                        $data = json_decode(file_get_contents("data/data.json"), true);
+                        $id_to_del = $_POST["delete"];
+
+                        foreach ($data as $key => $value) {
+                            if ($value["id"] == $id_to_del) {
+                                unset($data[$key]);
+                                break;
+                            }
+                        }
+
+                        file_put_contents("data/data.json", json_encode($data, JSON_UNESCAPED_UNICODE));
+                    }
+                ?>
             </div>
             <div class="content__right">
                 <h2 class="content__header">
-                    Содержимое файла data.txt
+                    Содержимое файла
                 </h2>
                 <?php require 'php/smartphones.php' ?>
             </div>
